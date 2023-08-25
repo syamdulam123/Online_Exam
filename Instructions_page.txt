@@ -1,0 +1,76 @@
+package online_exam;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.*;
+
+public class Start extends JFrame implements ActionListener {
+
+    JButton start,back;
+    String Name;
+    Start(String Name)
+    {
+        this.Name=Name;
+        getContentPane().setBackground(Color.WHITE);
+        setLayout(null);
+
+        JLabel instructions = new JLabel("Instructions");
+        instructions.setBounds(20,20,300,50);
+        instructions.setFont(new Font("Viner Hand ITC",Font.BOLD,30));
+        add(instructions);
+
+        JLabel rules = new JLabel();
+        rules.setBounds(20,0,1000,400);
+        rules.setText
+                ("<html>"+
+                        "1. The examination does not require using any paper, pen, pencil and calculator."+"<br><br>"+
+                        "2. Every student will take the examination on a Laptop/Desktop."+"<br><br>"+
+                        "3. On computer screen every student will be given objective type type Multiple Choice Questions (MCQs)."+"<br><br>"+
+                        "4. Each student will get questions and answers in different order selected randomly from a fixed Question Databank."+"<br><br>"+
+                        "5. The students just need to click on the Right Choice / Correct option from the  multiple" +"<br><br>"+
+                           "choices /options given with each question. For Multiple Choice Questions, each question has four options, " +"<br><br>"+
+                           "and the candidate has to click the appropriate option."+
+                        "<html>");
+        add(rules);
+
+        start = new JButton("Start");
+        start.setBounds(280, 380, 100, 30);
+        start.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        start.setBackground(new Color(30, 144, 255));
+        start.setForeground(Color.WHITE);
+        start.addActionListener(this);
+        add(start);
+
+        back = new JButton("Back");
+        back.setFont(new Font("Tahoma",Font.PLAIN,17));
+        back.setBackground(new Color(30,144,255));
+        back.setForeground(Color.WHITE);
+        back.setBounds(390,380,100,30);
+        back.addActionListener(this);
+        add(back);
+
+
+        setSize(800,500);
+        setLocation(400,150);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent ae)
+    {
+        if (ae.getSource() == start)
+        {
+            setVisible(false);
+            new Test(Name);
+        }
+        else if (ae.getSource() == back)
+        {
+            setVisible(false);
+            new Login();
+        }
+    }
+
+    public static void main(String[] args) {
+        new Start("");
+    }
+}

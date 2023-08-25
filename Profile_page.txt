@@ -1,0 +1,152 @@
+package online_exam;
+
+
+import java.awt.*;
+import javax.swing.*;
+import java.sql.*;
+import java.awt.event.*;
+
+public class Profile extends JFrame implements ActionListener{
+
+    JTextField txtid,txtname, txtphone, txtemail ,txtbranch,txtpassword;
+
+    JButton update, next;
+    String name;
+    String pass;
+    Profile(String pass) {
+        this.pass = pass;
+        getContentPane().setBackground(Color.WHITE);
+        setLayout(null);
+
+        JLabel heading = new JLabel("PROFILE");
+        heading.setBounds(360, 30, 500, 50);
+        heading.setFont(new Font("Viner Hand ITC", Font.BOLD, 45));
+        add(heading);
+
+
+        JLabel labelid = new JLabel("ID");
+        labelid.setBounds(150, 150, 150, 30);
+        labelid.setFont(new Font("serif", Font.PLAIN, 20));
+        add(labelid);
+
+        txtid = new JTextField();
+        txtid.setBounds(350, 150, 300, 30);
+        add(txtid);
+
+        JLabel labelname = new JLabel("Name");
+        labelname.setBounds(150, 200, 150, 30);
+        labelname.setFont(new Font("serif", Font.PLAIN, 20));
+        add(labelname);
+
+        txtname = new JTextField();
+        txtname.setBounds(350, 200, 300, 30);
+        add(txtname);
+
+
+        JLabel labelphone = new JLabel("Phone_No");
+        labelphone.setBounds(150, 250, 150, 30);
+        labelphone.setFont(new Font("serif", Font.PLAIN, 20));
+        add(labelphone);
+
+        txtphone = new JTextField();
+        txtphone.setBounds(350, 250, 300, 30);
+        add(txtphone);
+
+        JLabel labelemail = new JLabel("Email");
+        labelemail.setBounds(150, 300, 150, 30);
+        labelemail.setFont(new Font("serif", Font.PLAIN, 20));
+        add(labelemail);
+
+
+        txtemail = new JTextField();
+        txtemail.setBounds(350, 300, 300, 30);
+        add(txtemail);
+
+        JLabel branch = new JLabel("Branch");
+        branch.setBounds(150, 350, 150, 30);
+        branch.setFont(new Font("serif", Font.PLAIN, 20));
+        add(branch);
+
+        txtbranch = new JTextField();
+        txtbranch.setBackground(Color.WHITE);
+        txtbranch.setBounds(350, 350, 300, 30);
+        add(txtbranch);
+
+        JLabel password = new JLabel("Password");
+        password.setBounds(150, 400, 150, 30);
+        password.setFont(new Font("serif", Font.PLAIN, 20));
+        add(password);
+
+        txtpassword = new JTextField();
+        txtpassword.setBackground(Color.WHITE);
+        txtpassword.setBounds(350, 400, 300, 30);
+        add(txtpassword);
+
+        update = new JButton("Update Details");
+        update.setBounds(280, 500, 150, 40);
+        update.setBackground(Color.BLACK);
+        update.setForeground(Color.WHITE);
+        update.addActionListener(this);
+        add(update);
+
+        next = new JButton("Next");
+        next.setBounds(480, 500, 150, 40);
+        next.setBackground(Color.BLACK);
+        next.setForeground(Color.WHITE);
+        next.addActionListener(this);
+        add(next);
+
+        try {
+            Conn c = new Conn();
+            String query = "select * from profile where Password='" + pass + "'";
+            ResultSet rs = c.s.executeQuery(query);
+            while (rs.next()) {
+                txtid.setText(rs.getString("ID"));
+                txtname.setText(rs.getString("Name"));
+                txtphone.setText(rs.getString("Phone_No"));
+                txtemail.setText(rs.getString("Email"));
+                txtbranch.setText(rs.getString("Branch"));
+                txtpassword.setText(rs.getString("Password"));
+                name=rs.getString("Name");
+
+            }
+        } catch (Exception e) {
+
+        }
+
+
+        setSize(900, 700);
+        setLocation(300, 50);
+        setVisible(true);
+    }
+        public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == update) {
+            String ID = txtid.getText();
+            String Name = txtname.getText();
+            String Phone_No = txtphone.getText();
+            String Email = txtemail.getText();
+            String Branch =  txtbranch.getText();
+            String Password = txtpassword.getText();
+
+
+            try {
+                Conn conn = new Conn();
+                String query = "update profile set Name = '"+Name+"',Email = '"+Email+"',Phone_No = '"+Phone_No+"',Branch = '"+Branch+"',Password='"+Password+"' where ID='"+ID+"'";
+                conn.s.executeUpdate(query);
+                JOptionPane.showMessageDialog(null, "Profile successfully update");
+                setVisible(false);
+                new Profile(pass);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else if (ae.getSource()==next){
+            setVisible(false);
+            new Start(name);
+        }
+    }
+
+    public static void main(String[] args) {
+        new Profile("");
+    }
+}
